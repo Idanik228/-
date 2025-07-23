@@ -1,0 +1,263 @@
+# -<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Странные Явления в Доме</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #5d3fd3;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        #storyDisplay {
+            background-color: #e9eff5;
+            border: 1px solid #dcdcdc;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: left;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+        button {
+            background-color: #7a5df3;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #6a4de2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Генератор Странных Явлений</h1>
+        <div id="storyDisplay">Нажмите кнопку, чтобы сгенерировать новую историю...</div>
+        <button onclick="generateStory()">Сгенерировать</button>
+    </div>
+
+    <script>
+        const maxFloors = 10;
+
+        const rooms = {
+            "кухня": ["плита", "микроволновка", "холодильник", "чайник", "раковина", "кухонный стол", "шкафы", "посуда", "окно"],
+            "спальня": ["кровать", "шкаф", "лампа", "зеркало", "окно", "розетка", "дверь", "пол"],
+            "ванная": ["душ", "раковина", "зеркало", "ванна", "унитаз", "полотенца", "плитка", "вытяжка"],
+            "туалет": ["унитаз", "бачок", "вентиляция", "бумага"],
+            "гостиная": ["телевизор", "диван", "кресло", "столик", "лампы", "книжные полки", "картины", "окно", "акустика", "провода"],
+            "балкон": ["окно", "дверь", "перила", "цветы в горшках", "пол", "стены"],
+            "межквартирный коридор": ["свет", "двери", "стены", "лифт", "лестница", "электрощиток"],
+            "подъезд": ["входная дверь", "домофон", "почтовые ящики", "стены", "пол", "окна", "свет"]
+        };
+
+        const weirdElements = {
+            "свет": ["меняет цвет на {цвет}", "мерцает в странном ритме", "горит, хотя выключатель выключен", "выключается сам по себе", "становится слишком ярким/тусклым"],
+            "двери": ["открываются/закрываются сами по себе", "издают странные скрипы", "блокируются без причины", "покрываются инеем", "внезапно исчезают ручки"],
+            "стены": ["издают стоны/шепот", "покрываются странными узорами", "кажутся влажными на ощупь", "вибрируют без причины", "сквозят ледяным ветром"],
+            "окна": ["запотевают изнутри", "покрываются ледяными узорами", "отражают нечто, чего нет снаружи", "открываются/закрываются сами по себе", "издают звон, хотя ветра нет"],
+            "электроника": ["включается/выключается сама по себе", "показывает помехи/шипение", "издает странные звуки", "нагревается без причины", "меняет каналы/настройки"],
+            "предметы": ["перемещаются сами по себе", "издают звуки", "нагреваются/охлаждаются", "меняют форму", "исчезают и появляются снова"],
+            "соседи": ["слышат странные звуки из ниоткуда", "рассказывают о необычных снах", "кажутся одержимыми", "повторяют странные фразы", "передвигаются по дому бесшумно"]
+        };
+
+        const colors = ["красном", "синем", "зеленом", "фиолетовом", "черном", "оранжевом"];
+        const strangeSounds = ["скрежет", "шорох", "стон", "шепот", "звон", "треск", "вой", "плач", "смех"];
+        const strangeFeelings = ["холод", "жар", "давление", "легкое покалывание", "ползучее чувство"];
+        const timesOfDay = [
+            "После 00:00", "Глубокой ночью", "На рассвете", "Ближе к утру", "В сумерках",
+            "Поздним вечером", "Около полуночи", "В середине ночи", "Перед самым рассветом"
+        ];
+        const mysteriousFigures = [
+            "человек в плаще, который просто стоит и смотрит",
+            "тень, скользящая по стене",
+            "старушка, которая бесшумно появляется и исчезает",
+            "ребенок, играющий в странные игры",
+            "фигура, которая что-то шепчет в темноте",
+            "нечто, напоминающее дым, проходящее сквозь стены"
+        ];
+        const mysteriousActions = [
+            "перекладывает вещи",
+            "что-то записывает в невидимую тетрадь",
+            "касается поверхностей, оставляя ледяные следы",
+            "напевает жуткую мелодию",
+            "смотрит прямо в душу",
+            "оставляет после себя странные символы"
+        ];
+
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getFloorRange() {
+            const startFloor = getRandomInt(1, maxFloors);
+            let endFloor;
+            const rangeType = getRandomInt(1, 3); // 1: 1 floor, 2: 2 floors, 3: 3 floors
+
+            if (rangeType === 1) {
+                endFloor = startFloor;
+            } else if (rangeType === 2) {
+                endFloor = getRandomElement([startFloor - 1, startFloor + 1]);
+                endFloor = Math.max(1, Math.min(maxFloors, endFloor));
+            } else {
+                let options = [];
+                if (startFloor - 1 >= 1) options.push(startFloor - 1);
+                if (startFloor - 2 >= 1) options.push(startFloor - 2);
+                if (startFloor + 1 <= maxFloors) options.push(startFloor + 1);
+                if (startFloor + 2 <= maxFloors) options.push(startFloor + 2);
+                if (options.length > 0) {
+                    endFloor = getRandomElement(options);
+                } else {
+                    endFloor = startFloor; // Fallback if no valid range
+                }
+            }
+
+            if (startFloor === endFloor) {
+                return `на ${startFloor} этаже`;
+            } else if (startFloor < endFloor) {
+                return `с ${startFloor} по ${endFloor} этаж`;
+            } else {
+                return `с ${endFloor} по ${startFloor} этаж`;
+            }
+        }
+
+        function getAppropriateItem(room) {
+            const items = rooms[room];
+            if (items) {
+                return getRandomElement(items);
+            }
+            return null;
+        }
+
+        function generateStory() {
+            const floorRange = getFloorRange();
+            const time = getRandomElement(timesOfDay);
+            const phenomenonType = getRandomInt(1, 10); // Увеличиваем разнообразие
+
+            let story = "";
+            let currentRoom = getRandomElement(Object.keys(rooms));
+            let phenomenonDescription = "";
+
+            if (phenomenonType <= 3) { // 30% шанс на странный предмет/электронику
+                let item = getAppropriateItem(currentRoom);
+                while (!item) { // Если комната не имеет предметов, попробуем другую
+                    currentRoom = getRandomElement(Object.keys(rooms));
+                    item = getAppropriateItem(currentRoom);
+                }
+
+                let weirdEffect;
+                if (["плита", "микроволновка", "холодильник", "чайник", "телевизор", "акустика", "вытяжка", "домофон"].includes(item)) {
+                    weirdEffect = getRandomElement(weirdElements["электроника"]);
+                } else if (["свет", "лампы", "розетка", "провода"].includes(item)) {
+                    weirdEffect = getRandomElement(weirdElements["свет"]);
+                    if (item === "свет" && weirdEffect.includes("{цвет}")) {
+                        weirdEffect = weirdEffect.replace("{цвет}", getRandomElement(colors));
+                    }
+                } else if (["двери", "окно"].includes(item)) {
+                    weirdEffect = getRandomElement(weirdElements[item === "двери" ? "двери" : "окна"]);
+                }
+                else if (["стены"].includes(item)) {
+                    weirdEffect = getRandomElement(weirdElements["стены"]);
+                }
+                else {
+                    weirdEffect = getRandomElement(weirdElements["предметы"]);
+                }
+                phenomenonDescription = `${item} ${weirdEffect}`;
+            } else if (phenomenonType <= 5) { // 20% шанс на проблемы с соседями
+                const neighborAction = getRandomElement(weirdElements["соседи"]);
+                phenomenonDescription = `соседи ${neighborAction}`;
+                // Изменяем комнату для соседей, чтобы она соответствовала общему пространству или была связана с жильцами
+                const neighborRooms = ["межквартирный коридор", "подъезд", "гостиная"];
+                currentRoom = getRandomElement(neighborRooms);
+                // Добавляем конкретику, если действие касается звуков
+                if (neighborAction.includes("слышат странные звуки")) {
+                    phenomenonDescription = `соседи жалуются, что из их квартиры ${getRandomElement(strangeSounds)} без причины`;
+                } else if (neighborAction.includes("повторяют странные фразы")) {
+                    phenomenonDescription = `соседи на ${floorRange} постоянно повторяют странные фразы, слышимые через стены`;
+                }
+            } else if (phenomenonType <= 7) { // 20% шанс на странный свет/двери/стены/окна в общем коридоре
+                const commonAreaElements = ["свет", "двери", "стены", "окна"];
+                let commonElement = getRandomElement(commonAreaElements);
+                let weirdEffect;
+                if (commonElement === "свет") {
+                    weirdEffect = getRandomElement(weirdElements["свет"]).replace("{цвет}", getRandomElement(colors));
+                } else if (commonElement === "двери") {
+                    weirdEffect = getRandomElement(weirdElements["двери"]);
+                } else if (commonElement === "стены") {
+                    weirdEffect = getRandomElement(weirdElements["стены"]);
+                } else { // окна
+                    weirdEffect = getRandomElement(weirdElements["окна"]);
+                }
+                phenomenonDescription = `${commonElement} ${weirdEffect}`;
+                currentRoom = getRandomElement(["межквартирный коридор", "подъезд"]);
+            } else if (phenomenonType <= 9) { // 20% шанс на загадочное существо/человека
+                const figure = getRandomElement(mysteriousFigures);
+                const action = getRandomElement(mysteriousActions);
+                phenomenonDescription = `${figure} ${action}`;
+                // Загадочные фигуры могут быть где угодно
+                currentRoom = getRandomElement(Object.keys(rooms));
+                if (currentRoom === "туалет" || currentRoom === "ванная") {
+                     // Немного смягчаем, чтобы не было слишком жутко в маленьких комнатах
+                    phenomenonDescription = `из ${currentRoom} доносятся странные звуки, как будто ${figure} ${action}`;
+                } else if (currentRoom === "балкон") {
+                     phenomenonDescription = `на балконе замечена ${figure}, которая ${action}`;
+                }
+            } else { // 10% шанс на что-то совсем абстрактное
+                const strangeFeeling = getRandomElement(strangeFeelings);
+                const strangeSound = getRandomElement(strangeSounds);
+                const abstractPhenomena = [
+                    `чувство ${strangeFeeling} пронизывает ${currentRoom}`,
+                    `необъяснимый ${strangeSound} доносится из ${currentRoom}`,
+                    `воздух в ${currentRoom} становится невероятно плотным`,
+                    `в ${currentRoom} появляются мимолетные тени`,
+                    `из ${currentRoom} исходит необъяснимый запах`
+                ];
+                phenomenonDescription = getRandomElement(abstractPhenomena);
+            }
+
+            story = `${time} ${floorRange} ${currentRoom}: ${phenomenonDescription}.`;
+
+            document.getElementById('storyDisplay').innerText = story;
+        }
+
+        // Generate a story on page load
+        document.addEventListener('DOMContentLoaded', generateStory);
+    </script>
+</body>
+</html>
